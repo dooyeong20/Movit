@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "movit-cau",
+    "slug": "movit-cau",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "movit-cau"
+}
