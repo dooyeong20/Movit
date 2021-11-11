@@ -6,7 +6,9 @@ import { makeImgPath } from '../utils';
 
 const URL = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR`;
 
-const Container = styled.ScrollView``;
+const Container = styled.ScrollView`
+  background-color: ${(props) => props.theme.bgColor};
+`;
 
 const MovieView = styled.View`
   flex: 1;
