@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions } from 'react-native';
 import Swiper from 'react-native-swiper';
 import styled from 'styled-components/native';
+import { Poster } from '../components/Poster';
 import { Slide } from '../components/Slide';
 
 const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
@@ -21,6 +22,10 @@ const ActivityIndicator = styled.ActivityIndicator`
   color: ${(props) => props.theme.textColor};
 `;
 
+const ScrollView = styled.ScrollView`
+  margin-top: 20px;
+`;
+
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export function Movies() {
@@ -31,7 +36,7 @@ export function Movies() {
 
   const getTrending = async () => {
     const res = await fetch(
-      `https://api.themoviedb.org/3/movie/trending/all/week?api_key=${API_KEY}`
+      `https://api.themoviedb.org/3/trending/all/week?api_key=${API_KEY}`
     );
     const { results } = await res.json();
     setTrending(results);
@@ -58,6 +63,29 @@ export function Movies() {
     setLoading(false);
   };
 
+  const Movie = styled.TouchableOpacity`
+    margin-right: 20px;
+    align-items: center;
+  `;
+
+  const ListTitle = styled.Text`
+    color: ${(props) => props.theme.textColor};
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 30px;
+  `;
+
+  const Title = styled.Text`
+    color: ${(props) => props.theme.textColor};
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: 4px;
+  `;
+
+  const Votes = styled.Text`
+    color: ${(props) => props.theme.textColor};
+  `;
+
   useEffect(() => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,6 +107,7 @@ export function Movies() {
         containerStyle={{
           width: '100%',
           height: SCREEN_HEIGHT / 4,
+          marginBottom: 30,
         }}
       >
         {nowPlaying.map((movie) => (
@@ -92,6 +121,25 @@ export function Movies() {
           />
         ))}
       </Swiper>
+      <ListTitle>Trending Movies</ListTitle>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingLeft: 30,
+        }}
+      >
+        {trending.map((movie) => (
+          <Movie key={movie.id} activeOpacity={0.8}>
+            <Poster path={movie.poster_path} />
+            <Title>
+              {movie.original_title?.slice(0, 15)}
+              {movie.original_title?.length > 15 && '...'}
+            </Title>
+            <Votes>⭐️ {movie.vote_average} / 10</Votes>
+          </Movie>
+        ))}
+      </ScrollView>
     </Container>
   );
 }
