@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions } from 'react-native';
+import { Dimensions, RefreshControl } from 'react-native';
 import Swiper from 'react-native-swiper';
 import styled from 'styled-components/native';
 import { Poster } from '../components/Poster';
 import { Slide } from '../components/Slide';
+import { getFormatDate } from '../util/utils';
 
 const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
 
@@ -26,9 +27,59 @@ const ScrollView = styled.ScrollView`
   margin-top: 20px;
 `;
 
+const Movie = styled.TouchableOpacity`
+  margin-right: 20px;
+  align-items: center;
+`;
+
+const ListTitle = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 25px;
+`;
+
+const Title = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  font-weight: bold;
+  margin-top: 8px;
+  margin-bottom: 4px;
+`;
+
+const Votes = styled.Text`
+  color: ${(props) => props.theme.textColor};
+`;
+
+const ListContainer = styled.View`
+  margin-bottom: 40px;
+`;
+
+const HMovie = styled.View`
+  padding: 0 25px;
+  flex-direction: row;
+  margin-top: 20px;
+`;
+
+const HColumn = styled.View`
+  margin-left: 20px;
+  width: 65%;
+`;
+
+const Overview = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  opacity: 0.8;
+`;
+
+const Release = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  font-size: 13px;
+  margin-bottom: 5px;
+`;
+
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export function Movies() {
+  const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState<any[]>([]);
   const [upcoming, setUpcoming] = useState<any[]>([]);
@@ -63,28 +114,11 @@ export function Movies() {
     setLoading(false);
   };
 
-  const Movie = styled.TouchableOpacity`
-    margin-right: 20px;
-    align-items: center;
-  `;
-
-  const ListTitle = styled.Text`
-    color: ${(props) => props.theme.textColor};
-    font-size: 16px;
-    font-weight: bold;
-    margin-left: 30px;
-  `;
-
-  const Title = styled.Text`
-    color: ${(props) => props.theme.textColor};
-    font-weight: bold;
-    margin-top: 8px;
-    margin-bottom: 4px;
-  `;
-
-  const Votes = styled.Text`
-    color: ${(props) => props.theme.textColor};
-  `;
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await getData();
+    setRefreshing(false);
+  };
 
   useEffect(() => {
     getData();
@@ -96,7 +130,11 @@ export function Movies() {
       <ActivityIndicator color="" size="large" />
     </Loader>
   ) : (
-    <Container>
+    <Container
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
       <Swiper
         horizontal
         loop
@@ -107,7 +145,7 @@ export function Movies() {
         containerStyle={{
           width: '100%',
           height: SCREEN_HEIGHT / 4,
-          marginBottom: 30,
+          marginBottom: 25,
         }}
       >
         {nowPlaying.map((movie) => (
@@ -121,25 +159,48 @@ export function Movies() {
           />
         ))}
       </Swiper>
-      <ListTitle>Trending Movies</ListTitle>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingLeft: 30,
-        }}
-      >
-        {trending.map((movie) => (
-          <Movie key={movie.id} activeOpacity={0.8}>
+
+      <ListContainer>
+        <ListTitle>Trending Movies</ListTitle>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingLeft: 30,
+          }}
+        >
+          {trending.map((movie) => (
+            <Movie key={movie.id} activeOpacity={0.8}>
+              <Poster path={movie.poster_path} />
+              <Title>
+                {movie.original_title?.slice(0, 15)}
+                {movie.original_title?.length > 15 && '...'}
+              </Title>
+              <Votes>⭐️ {movie.vote_average} / 10</Votes>
+            </Movie>
+          ))}
+        </ScrollView>
+      </ListContainer>
+
+      <ListContainer>
+        <ListTitle>Up coming</ListTitle>
+        {upcoming.map((movie) => (
+          <HMovie key={movie.id}>
             <Poster path={movie.poster_path} />
-            <Title>
-              {movie.original_title?.slice(0, 15)}
-              {movie.original_title?.length > 15 && '...'}
-            </Title>
-            <Votes>⭐️ {movie.vote_average} / 10</Votes>
-          </Movie>
+            <HColumn>
+              <Title>
+                {movie.original_title?.slice(0, 30)}
+                {movie.original_title?.length > 30 && '...'}
+              </Title>
+              <Release>{getFormatDate(movie.release_date)}</Release>
+              <Overview>
+                {movie.overview !== '' && movie.overview.slice(0, 160)}{' '}
+                {movie.overview.length > 160 && '...'}
+              </Overview>
+            </HColumn>
+          </HMovie>
         ))}
-      </ScrollView>
+      </ListContainer>
     </Container>
   );
 }
