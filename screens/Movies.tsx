@@ -1,69 +1,95 @@
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Dimensions, Image, Text } from 'react-native';
-import Swiper from 'react-native-web-swiper';
+import { Dimensions } from 'react-native';
+import Swiper from 'react-native-swiper';
 import styled from 'styled-components/native';
-import { makeImgPath } from '../utils';
+import { Slide } from '../components/Slide';
 
-const URL = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR`;
+const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
 
 const Container = styled.ScrollView`
   background-color: ${(props) => props.theme.bgColor};
 `;
 
-const MovieView = styled.View`
-  flex: 1;
-`;
-
 const Loader = styled.View`
+  background-color: ${(props) => props.theme.bgColor};
   flex: 1;
   justify-content: center;
   align-items: center;
 `;
 
-const BgImg = styled.Image`
-  flex: 1;
+const ActivityIndicator = styled.ActivityIndicator`
+  color: ${(props) => props.theme.textColor};
 `;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export function Movies() {
   const [loading, setLoading] = useState(true);
-  const [nowPlaying, setNowPlaying] = useState([]);
+  const [nowPlaying, setNowPlaying] = useState<any[]>([]);
+  const [upcoming, setUpcoming] = useState<any[]>([]);
+  const [trending, setTrending] = useState<any[]>([]);
+
+  const getTrending = async () => {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/trending/all/week?api_key=${API_KEY}`
+    );
+    const { results } = await res.json();
+    setTrending(results);
+  };
+
+  const getUpComing = async () => {
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1&region=KR`
+    );
+    const { results } = await res.json();
+    setUpcoming(results);
+  };
 
   const getNowPlaying = async () => {
-    const res = await fetch(URL);
+    const res = await fetch(
+      `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR`
+    );
     const { results } = await res.json();
     setNowPlaying(results);
+  };
+
+  const getData = async () => {
+    await Promise.all([getNowPlaying(), getTrending(), getUpComing()]);
     setLoading(false);
   };
 
   useEffect(() => {
-    getNowPlaying();
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return loading ? (
     <Loader>
-      <ActivityIndicator color="#2e2e2e" size="large" />
+      <ActivityIndicator color="" size="large" />
     </Loader>
   ) : (
     <Container>
       <Swiper
+        horizontal
         loop
-        timeout={4}
-        controlsEnabled={false}
+        autoplay
+        autoplayTimeout={4}
+        showsButtons={false}
+        showsPagination={false}
         containerStyle={{
           width: '100%',
           height: SCREEN_HEIGHT / 4,
         }}
       >
         {nowPlaying.map((movie) => (
-          <MovieView key={movie.id}>
-            <BgImg
-              source={{
-                uri: makeImgPath(movie.backdrop_path),
-              }}
-            />
-          </MovieView>
+          <Slide
+            key={movie.id}
+            backdropImgPath={movie.backdrop_path}
+            originalTitle={movie.original_title}
+            posterImgPath={movie.poster_path}
+            rating={movie.vote_average}
+            overview={movie.overview}
+          />
         ))}
       </Swiper>
     </Container>
