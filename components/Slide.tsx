@@ -40,7 +40,7 @@ const DetailWrapper = styled.View`
 `;
 
 const TextWrapper = styled.View`
-  width: 40%;
+  width: 50%;
   margin-left: 20px;
 `;
 
