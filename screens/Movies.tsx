@@ -4,7 +4,8 @@ import Swiper from 'react-native-swiper';
 import styled from 'styled-components/native';
 import { Poster } from '../components/Poster';
 import { Slide } from '../components/Slide';
-import { getFormatDate } from '../util';
+import VMedia from '../components/VMedia';
+import { getFormatDate } from '../util/';
 
 const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
 
@@ -27,11 +28,6 @@ const ScrollView = styled.ScrollView`
   margin-top: 20px;
 `;
 
-const Movie = styled.TouchableOpacity`
-  margin-right: 20px;
-  align-items: center;
-`;
-
 const ListTitle = styled.Text`
   color: ${(props) => props.theme.textColor};
   font-size: 16px;
@@ -44,10 +40,6 @@ const Title = styled.Text`
   font-weight: bold;
   margin-top: 8px;
   margin-bottom: 4px;
-`;
-
-const Votes = styled.Text`
-  color: ${(props) => props.theme.textColor};
 `;
 
 const ListContainer = styled.View`
@@ -170,14 +162,12 @@ export function Movies() {
           }}
         >
           {trending.map((movie) => (
-            <Movie key={movie.id} activeOpacity={0.8}>
-              <Poster path={movie.poster_path} />
-              <Title>
-                {movie.original_title?.slice(0, 15)}
-                {movie.original_title?.length > 15 && '...'}
-              </Title>
-              <Votes>⭐️ {movie.vote_average} / 10</Votes>
-            </Movie>
+            <VMedia
+              key={movie.id}
+              imgPath={movie.poster_path}
+              title={movie.original_title}
+              vote={movie.vote_average}
+            />
           ))}
         </ScrollView>
       </ListContainer>
