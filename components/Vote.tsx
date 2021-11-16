@@ -8,6 +8,7 @@ interface IProps {
 
 const Votes = styled.Text`
   color: ${(props) => props.theme.textColor};
+  margin-bottom: 2px;
 `;
 
 export function Vote({ rating, total }: IProps) {
