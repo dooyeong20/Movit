@@ -4,7 +4,7 @@ import Swiper from 'react-native-swiper';
 import styled from 'styled-components/native';
 import { Poster } from '../components/Poster';
 import { Slide } from '../components/Slide';
-import { getFormatDate } from '../util/utils';
+import { getFormatDate } from '../util';
 
 const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
 

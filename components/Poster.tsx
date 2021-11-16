@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { makeImgPath } from '../util/utils';
+import { makeImgPath } from '../util';
 
 interface IProps {
   path: string;
