@@ -2,6 +2,6 @@
 
 ## Service flow
 
-<img src="./movit_model.svg" style="background: white"/>
+<img src="./movit_model.png" />
 
 작성 중 ...
