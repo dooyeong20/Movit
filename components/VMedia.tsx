@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 import { Vote } from './Vote';
 import { Poster } from './Poster';
+import { getText } from '../util';
 
 const Movie = styled.TouchableOpacity`
   margin-right: 20px;
@@ -25,10 +26,7 @@ export function VMedia({ imgPath, title, rating }: IProps) {
   return (
     <Movie activeOpacity={0.8}>
       <Poster path={imgPath} />
-      <Title>
-        {title?.slice(0, 15)}
-        {title?.length > 15 && '...'}
-      </Title>
+      <Title>{getText(title, 15)}</Title>
       <Vote rating={rating} total="10" />
     </Movie>
   );

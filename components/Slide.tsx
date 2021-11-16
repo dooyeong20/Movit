@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import { Vote } from './Vote';
-import { makeImgPath } from '../util';
+import { getText, makeImgPath } from '../util';
 import { Poster } from './Poster';
 
 interface IProps {
@@ -74,7 +74,7 @@ export function Slide({
             <Title>{originalTitle}</Title>
             <Vote rating={rating} total="10" />
             {/* TODO: text가 없을 때 예외 처리*/}
-            <OverView>{overview.slice(0, 90)}...</OverView>
+            <OverView>{getText(overview, 90)}</OverView>
           </TextWrapper>
         </DetailWrapper>
       </BgImg>

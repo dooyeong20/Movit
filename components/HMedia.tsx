@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { getFormatDate } from '../util';
+import { getFormatDate, getText } from '../util';
 import { Poster } from './Poster';
 
 interface IProps {
@@ -44,15 +44,9 @@ export function HMedia({ imgPath, title, overview, releaseDate }: IProps) {
     <HMovie>
       <Poster path={imgPath} />
       <HColumn>
-        <Title>
-          {title?.slice(0, 30)}
-          {title?.length > 30 && '...'}
-        </Title>
+        <Title>{getText(title, 30)}</Title>
         <Release>{getFormatDate(releaseDate)}</Release>
-        <Overview>
-          {overview !== '' && overview.slice(0, 160)}{' '}
-          {overview.length > 160 && '...'}
-        </Overview>
+        <Overview>{getText(overview, 160)}</Overview>
       </HColumn>
     </HMovie>
   );
