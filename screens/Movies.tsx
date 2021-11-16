@@ -134,7 +134,7 @@ export function Movies() {
               key={movie.id}
               imgPath={movie.poster_path}
               title={movie.original_title}
-              vote={movie.vote_average}
+              rating={movie.vote_average}
             />
           ))}
         </ScrollView>

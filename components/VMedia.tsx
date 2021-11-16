@@ -1,10 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { Vote } from './Vote';
 import { Poster } from './Poster';
-
-const Votes = styled.Text`
-  color: ${(props) => props.theme.textColor};
-`;
 
 const Movie = styled.TouchableOpacity`
   margin-right: 20px;
@@ -21,10 +18,10 @@ const Title = styled.Text`
 interface IProps {
   imgPath: string;
   title: string;
-  vote: string;
+  rating: string;
 }
 
-export function VMedia({ imgPath, title, vote }: IProps) {
+export function VMedia({ imgPath, title, rating }: IProps) {
   return (
     <Movie activeOpacity={0.8}>
       <Poster path={imgPath} />
@@ -32,7 +29,7 @@ export function VMedia({ imgPath, title, vote }: IProps) {
         {title?.slice(0, 15)}
         {title?.length > 15 && '...'}
       </Title>
-      <Votes>⭐️ {vote} / 10</Votes>
+      <Vote rating={rating} total="10" />
     </Movie>
   );
 }

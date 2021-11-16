@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { Vote } from './Vote';
 import { makeImgPath } from '../util';
 import { Poster } from './Poster';
 
@@ -51,11 +52,6 @@ const OverView = styled.Text`
   opacity: 0.8;
 `;
 
-const Votes = styled.Text`
-  padding: 3px 0;
-  color: ${({ theme }) => theme.textColor};
-`;
-
 export function Slide({
   backdropImgPath,
   overview,
@@ -76,7 +72,7 @@ export function Slide({
           <Poster path={posterImgPath} />
           <TextWrapper>
             <Title>{originalTitle}</Title>
-            <Votes>⭐️ {rating} / 10</Votes>
+            <Vote rating={rating} total="10" />
             {/* TODO: text가 없을 때 예외 처리*/}
             <OverView>{overview.slice(0, 90)}...</OverView>
           </TextWrapper>
