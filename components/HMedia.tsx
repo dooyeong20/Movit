@@ -39,12 +39,7 @@ const Title = styled.Text`
   margin-bottom: 4px;
 `;
 
-export default function HMedia({
-  imgPath,
-  title,
-  overview,
-  releaseDate,
-}: IProps) {
+export function HMedia({ imgPath, title, overview, releaseDate }: IProps) {
   return (
     <HMovie>
       <Poster path={imgPath} />

@@ -24,7 +24,7 @@ interface IProps {
   vote: string;
 }
 
-export default function VMedia({ imgPath, title, vote }: IProps) {
+export function VMedia({ imgPath, title, vote }: IProps) {
   return (
     <Movie activeOpacity={0.8}>
       <Poster path={imgPath} />

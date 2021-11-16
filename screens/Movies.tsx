@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, RefreshControl } from 'react-native';
 import Swiper from 'react-native-swiper';
 import styled from 'styled-components/native';
-import HMedia from '../components/HMedia';
-import { Slide } from '../components/Slide';
-import VMedia from '../components/VMedia';
+import { Slide, HMedia, VMedia } from '../components';
 
 const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
 
