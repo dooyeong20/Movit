@@ -2,6 +2,6 @@
 
 ## Test Result
 
-![test image](./test.png)
+<img src="./test.png" width="600"/>
 
 작성 중입니다...
