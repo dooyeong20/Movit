@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Dimensions, RefreshControl } from 'react-native';
 import Swiper from 'react-native-swiper';
 import styled from 'styled-components/native';
-import { Poster } from '../components/Poster';
-import { Slide } from '../components/Slide';
-import { getFormatDate } from '../util';
+import { Slide, HMedia, VMedia } from '../components';
 
 const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
 
@@ -27,11 +25,6 @@ const ScrollView = styled.ScrollView`
   margin-top: 20px;
 `;
 
-const Movie = styled.TouchableOpacity`
-  margin-right: 20px;
-  align-items: center;
-`;
-
 const ListTitle = styled.Text`
   color: ${(props) => props.theme.textColor};
   font-size: 16px;
@@ -39,41 +32,8 @@ const ListTitle = styled.Text`
   margin-left: 25px;
 `;
 
-const Title = styled.Text`
-  color: ${(props) => props.theme.textColor};
-  font-weight: bold;
-  margin-top: 8px;
-  margin-bottom: 4px;
-`;
-
-const Votes = styled.Text`
-  color: ${(props) => props.theme.textColor};
-`;
-
 const ListContainer = styled.View`
   margin-bottom: 40px;
-`;
-
-const HMovie = styled.View`
-  padding: 0 25px;
-  flex-direction: row;
-  margin-top: 20px;
-`;
-
-const HColumn = styled.View`
-  margin-left: 20px;
-  width: 65%;
-`;
-
-const Overview = styled.Text`
-  color: ${(props) => props.theme.textColor};
-  opacity: 0.8;
-`;
-
-const Release = styled.Text`
-  color: ${(props) => props.theme.textColor};
-  font-size: 13px;
-  margin-bottom: 5px;
 `;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -95,7 +55,7 @@ export function Movies() {
 
   const getUpComing = async () => {
     const res = await fetch(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1&region=KR`
+      `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1&region=US`
     );
     const { results } = await res.json();
     setUpcoming(results);
@@ -103,7 +63,7 @@ export function Movies() {
 
   const getNowPlaying = async () => {
     const res = await fetch(
-      `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR`
+      `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=US`
     );
     const { results } = await res.json();
     setNowPlaying(results);
@@ -170,14 +130,12 @@ export function Movies() {
           }}
         >
           {trending.map((movie) => (
-            <Movie key={movie.id} activeOpacity={0.8}>
-              <Poster path={movie.poster_path} />
-              <Title>
-                {movie.original_title?.slice(0, 15)}
-                {movie.original_title?.length > 15 && '...'}
-              </Title>
-              <Votes>⭐️ {movie.vote_average} / 10</Votes>
-            </Movie>
+            <VMedia
+              key={movie.id}
+              imgPath={movie.poster_path}
+              title={movie.original_title}
+              rating={movie.vote_average}
+            />
           ))}
         </ScrollView>
       </ListContainer>
@@ -185,20 +143,13 @@ export function Movies() {
       <ListContainer>
         <ListTitle>Up coming</ListTitle>
         {upcoming.map((movie) => (
-          <HMovie key={movie.id}>
-            <Poster path={movie.poster_path} />
-            <HColumn>
-              <Title>
-                {movie.original_title?.slice(0, 30)}
-                {movie.original_title?.length > 30 && '...'}
-              </Title>
-              <Release>{getFormatDate(movie.release_date)}</Release>
-              <Overview>
-                {movie.overview !== '' && movie.overview.slice(0, 160)}{' '}
-                {movie.overview.length > 160 && '...'}
-              </Overview>
-            </HColumn>
-          </HMovie>
+          <HMedia
+            key={movie.id}
+            imgPath={movie.poster_path}
+            title={movie.original_title}
+            overview={movie.overview}
+            releaseDate={movie.release_date}
+          />
         ))}
       </ListContainer>
     </Container>

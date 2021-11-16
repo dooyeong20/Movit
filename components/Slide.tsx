@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { makeImgPath } from '../util';
+import { Vote } from './Vote';
+import { getText, makeImgPath } from '../util';
 import { Poster } from './Poster';
 
 interface IProps {
@@ -51,11 +52,6 @@ const OverView = styled.Text`
   opacity: 0.8;
 `;
 
-const Votes = styled.Text`
-  padding: 3px 0;
-  color: ${({ theme }) => theme.textColor};
-`;
-
 export function Slide({
   backdropImgPath,
   overview,
@@ -76,9 +72,9 @@ export function Slide({
           <Poster path={posterImgPath} />
           <TextWrapper>
             <Title>{originalTitle}</Title>
-            <Votes>⭐️ {rating} / 10</Votes>
+            <Vote rating={rating} total="10" />
             {/* TODO: text가 없을 때 예외 처리*/}
-            <OverView>{overview.slice(0, 90)}...</OverView>
+            <OverView>{getText(overview, 90)}</OverView>
           </TextWrapper>
         </DetailWrapper>
       </BgImg>
