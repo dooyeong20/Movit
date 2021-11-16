@@ -5,7 +5,6 @@ import { Poster } from './Poster';
 import { getText } from '../util';
 
 const Movie = styled.TouchableOpacity`
-  margin-right: 20px;
   align-items: center;
 `;
 
