@@ -1,19 +1,18 @@
-const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
-const BASE_URL = 'https://api.themoviedb.org/3';
+import { API_KEY, BASE_URL } from '../const';
 
 const trending = () =>
-  fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`).then((res) =>
-    res.json()
-  );
+  fetch(
+    `${BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=ko-KR&region=KR`
+  ).then((res) => res.json());
 
 const upcoming = () =>
   fetch(
-    `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
+    `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=ko-KR&page=1&region=KR`
   ).then((res) => res.json());
 
 const nowPlaying = () =>
   fetch(
-    `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`
+    `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=ko-KR&page=1&region=KR`
   ).then((res) => res.json());
 
 export const movieAPI = { trending, upcoming, nowPlaying };

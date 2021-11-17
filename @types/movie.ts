@@ -13,6 +13,8 @@ export type Result = {
   video: boolean;
   vote_average: number;
   vote_count: number;
+  original_name: string;
+  name: string;
 };
 
 export type BaseResponse = {

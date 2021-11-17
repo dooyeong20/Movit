@@ -5,33 +5,14 @@ import { useQueries, useQueryClient, UseQueryOptions } from 'react-query';
 import styled from 'styled-components/native';
 import { BaseResponse } from '../@types';
 import { movieAPI } from '../Api';
-import { HMedia, Slide, VMedia } from '../components';
+import { HList, HMedia, Loader, Slide } from '../components';
 import { Seperator } from '../components/Seperator';
-
-const Container = styled.FlatList`
-  background-color: ${(props) => props.theme.bgColor};
-` as unknown as typeof FlatList;
-
-const Loader = styled.View`
-  background-color: ${(props) => props.theme.bgColor};
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ActivityIndicator = styled.ActivityIndicator`
-  color: ${(props) => props.theme.textColor};
-`;
 
 const ListTitle = styled.Text`
   color: ${(props) => props.theme.textColor};
   font-size: 16px;
   font-weight: bold;
   margin-left: 25px;
-`;
-
-const ListContainer = styled.View`
-  margin-bottom: 40px;
 `;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -83,11 +64,9 @@ export function Movies() {
   }, []);
 
   return isLoading ? (
-    <Loader>
-      <ActivityIndicator color="" size="large" />
-    </Loader>
+    <Loader />
   ) : (
-    <Container
+    <FlatList
       onRefresh={onRefresh}
       refreshing={refreshing}
       data={upcoming?.results}
@@ -118,30 +97,7 @@ export function Movies() {
             ))}
           </Swiper>
 
-          <ListContainer>
-            <ListTitle>Trending Movies</ListTitle>
-            <FlatList
-              data={trending?.results}
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              keyExtractor={({ id }) => id + ''}
-              ItemSeparatorComponent={renderSeperator({
-                variant: 'horizontal',
-                space: 20,
-              })}
-              contentContainerStyle={{
-                paddingHorizontal: 25,
-                marginTop: 20,
-              }}
-              renderItem={({ item }) => (
-                <VMedia
-                  imgPath={item.poster_path}
-                  title={item.original_title}
-                  rating={item.vote_average}
-                />
-              )}
-            />
-          </ListContainer>
+          <HList title="Trending Movies" data={trending} />
           <ListTitle>Up coming</ListTitle>
         </>
       }
