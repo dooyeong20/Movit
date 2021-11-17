@@ -6,7 +6,7 @@
     "web": "expo start --web",
     "start": "react-native start",
     "lint": "eslint .",
-    "test": "jest --coverage && rm -rf ./coverage"
+    "test": "jest --coverage --verbose && rm -rf ./coverage"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.0.9",
