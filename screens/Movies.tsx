@@ -5,23 +5,8 @@ import { useQueries, useQueryClient, UseQueryOptions } from 'react-query';
 import styled from 'styled-components/native';
 import { BaseResponse } from '../@types';
 import { movieAPI } from '../Api';
-import { HMedia, Slide, VMedia } from '../components';
+import { HMedia, Loader, Slide, VMedia } from '../components';
 import { Seperator } from '../components/Seperator';
-
-const Container = styled.FlatList`
-  background-color: ${(props) => props.theme.bgColor};
-` as unknown as typeof FlatList;
-
-const Loader = styled.View`
-  background-color: ${(props) => props.theme.bgColor};
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ActivityIndicator = styled.ActivityIndicator`
-  color: ${(props) => props.theme.textColor};
-`;
 
 const ListTitle = styled.Text`
   color: ${(props) => props.theme.textColor};
@@ -83,11 +68,9 @@ export function Movies() {
   }, []);
 
   return isLoading ? (
-    <Loader>
-      <ActivityIndicator color="" size="large" />
-    </Loader>
+    <Loader />
   ) : (
-    <Container
+    <FlatList
       onRefresh={onRefresh}
       refreshing={refreshing}
       data={upcoming?.results}
