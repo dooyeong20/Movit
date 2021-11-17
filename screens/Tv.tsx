@@ -42,7 +42,6 @@ export function Tv() {
 
   return (
     <ScrollView
-      style={{ padding: 20 }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
