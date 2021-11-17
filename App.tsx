@@ -6,6 +6,7 @@ import { ThemeProvider } from 'styled-components/native';
 import { Tabs } from './navigation/Tab';
 import { darkTheme, lightTheme } from './theme/styled';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import './config';
 
 const queryClient = new QueryClient();
 
