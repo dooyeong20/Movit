@@ -12,7 +12,7 @@ interface IProps {
   rating?: number;
 }
 
-const HMovie = styled.View`
+const HMovie = styled.TouchableOpacity`
   padding: 0 25px;
   flex-direction: row;
   margin-top: 20px;
@@ -49,7 +49,7 @@ export function HMedia({
   rating,
 }: IProps) {
   return (
-    <HMovie>
+    <HMovie activeOpacity={0.7}>
       <Poster path={imgPath} />
       <HColumn>
         <Title>{getText(title, 30)}</Title>
