@@ -1,5 +1,4 @@
-const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
-const BASE_URL = 'https://api.themoviedb.org/3';
+import { API_KEY, BASE_URL } from '../const';
 
 const trending = () =>
   fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`).then((res) =>
