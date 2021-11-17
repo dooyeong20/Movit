@@ -3,7 +3,7 @@ import { Dimensions, FlatList } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useQueries, useQueryClient, UseQueryOptions } from 'react-query';
 import styled from 'styled-components/native';
-import { BaseResponse } from '../@types/movie';
+import { BaseResponse } from '../@types';
 import { movieAPI } from '../Api';
 import { HMedia, Slide, VMedia } from '../components';
 import { Seperator } from '../components/Seperator';
