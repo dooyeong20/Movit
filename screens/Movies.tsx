@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Dimensions, FlatList, RefreshControl, Text, View } from 'react-native';
+import { Dimensions, FlatList } from 'react-native';
 import Swiper from 'react-native-swiper';
 import styled from 'styled-components/native';
-import { Slide, HMedia, VMedia } from '../components';
+import { HMedia, Slide, VMedia } from '../components';
+import { Seperator } from '../components/Seperator';
 
 const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
 
@@ -76,6 +77,35 @@ export function Movies() {
     setRefreshing(false);
   };
 
+  const renderVMedia = ({ item }) => (
+    <VMedia
+      imgPath={item.poster_path}
+      title={item.original_title}
+      rating={item.vote_average}
+    />
+  );
+
+  const renderHMedia = ({ item }) => (
+    <HMedia
+      imgPath={item.poster_path}
+      title={item.original_title}
+      overview={item.overview}
+      releaseDate={item.release_date}
+    />
+  );
+
+  const renderSeperator =
+    ({
+      variant,
+      space,
+    }: {
+      variant: 'horizontal' | 'vertical';
+      space: number;
+    }) =>
+    // eslint-disable-next-line react/display-name
+    () =>
+      <Seperator variant={variant} space={space} />;
+
   useEffect(() => {
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -124,32 +154,25 @@ export function Movies() {
               horizontal
               showsHorizontalScrollIndicator={false}
               keyExtractor={({ id }) => id + ''}
-              ItemSeparatorComponent={() => <View style={{ width: 20 }}></View>}
+              ItemSeparatorComponent={renderSeperator({
+                variant: 'horizontal',
+                space: 20,
+              })}
               contentContainerStyle={{
                 paddingHorizontal: 25,
                 marginTop: 20,
               }}
-              renderItem={({ item }) => (
-                <VMedia
-                  imgPath={item.poster_path}
-                  title={item.original_title}
-                  rating={item.vote_average}
-                />
-              )}
+              renderItem={renderVMedia}
             />
           </ListContainer>
           <ListTitle>Up coming</ListTitle>
         </>
       }
-      ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-      renderItem={({ item }) => (
-        <HMedia
-          imgPath={item.poster_path}
-          title={item.original_title}
-          overview={item.overview}
-          releaseDate={item.release_date}
-        />
-      )}
+      ItemSeparatorComponent={renderSeperator({
+        variant: 'vertical',
+        space: 10,
+      })}
+      renderItem={renderHMedia}
     />
   );
 }
