@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { useQuery } from 'react-query';
+import { QueryClient, useQueries, useQuery, useQueryClient } from 'react-query';
 import styled from 'styled-components/native';
 import { movieAPI } from '../Api';
 import { HMedia, Slide, VMedia } from '../components';
@@ -36,21 +36,34 @@ const ListContainer = styled.View`
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export function Movies() {
-  const [refreshing, setRefreshing] = useState(false);
-  const { isLoading: nowPlayingLoading, data: nowPlaying } = useQuery(
-    'nowPlaying',
-    movieAPI.nowPlaying
-  );
-  const { isLoading: upcomingLoading, data: upcoming } = useQuery(
-    'upcoming',
-    movieAPI.upcoming
-  );
-  const { isLoading: trendingLoading, data: trending } = useQuery(
-    'trending',
-    movieAPI.trending
-  );
+  const queryClient = useQueryClient();
+  const [
+    {
+      isLoading: nowPlayingLoading,
+      data: nowPlaying,
+      isRefetching: isRefetchingNowPlaying,
+    },
+    {
+      isLoading: upcomingLoading,
+      data: upcoming,
+      isRefetching: isRefetchingUpcoming,
+    },
+    {
+      isLoading: trendingLoading,
+      data: trending,
+      isRefetching: isRefetchingTrending,
+    },
+  ] = useQueries([
+    { queryKey: ['movies', 'nowPlaying'], queryFn: movieAPI.nowPlaying },
+    { queryKey: ['movies', 'upcoming'], queryFn: movieAPI.upcoming },
+    { queryKey: ['movies', 'trending'], queryFn: movieAPI.trending },
+  ]);
   const isLoading = upcomingLoading || trendingLoading || nowPlayingLoading;
-  const onRefresh = async () => {};
+  const refreshing =
+    isRefetchingNowPlaying || isRefetchingUpcoming || isRefetchingTrending;
+  const onRefresh = () => {
+    queryClient.refetchQueries(['movies']);
+  };
   const renderVMedia = ({ item }) => (
     <VMedia
       imgPath={item.poster_path}
