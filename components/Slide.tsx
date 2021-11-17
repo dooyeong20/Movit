@@ -74,7 +74,7 @@ export function Slide({
             <Title>{originalTitle}</Title>
             <Vote rating={rating} total="10" />
             {/* TODO: text가 없을 때 예외 처리*/}
-            <OverView>{getText(overview, 90)}</OverView>
+            <OverView>{getText(overview, 75)}</OverView>
           </TextWrapper>
         </DetailWrapper>
       </BgImg>

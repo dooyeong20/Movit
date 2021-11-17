@@ -1,6 +1,6 @@
 export const getText = (text: string | undefined | null, size: number) => {
   if (!text) {
-    return '...';
+    return 'Coming Soon ...';
   }
 
   const slicedText = text.slice(0, size);

@@ -28,7 +28,7 @@ describe('Test for util functions', () => {
   });
 
   test('Text slice test [getText(undefined, 2) -> ap...]', () => {
-    expect(getText(undefined as unknown as string, 2)).toBe('...');
+    expect(getText(undefined as unknown as string, 2)).toBe('Coming Soon ...');
   });
 
   test("Text slice test [getText('apple', 10) -> apple]", () => {

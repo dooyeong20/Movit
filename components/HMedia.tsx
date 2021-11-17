@@ -55,7 +55,7 @@ export function HMedia({
         <Title>{getText(title, 30)}</Title>
         {releaseDate && <Release>{getFormatDate(releaseDate)}</Release>}
         {rating && <Vote rating={rating} total="10" />}
-        <Overview>{getText(overview, 160)}</Overview>
+        <Overview>{getText(overview, 100)}</Overview>
       </HColumn>
     </HMovie>
   );
