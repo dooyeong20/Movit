@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Dimensions, FlatList } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { QueryClient, useQueries, useQuery, useQueryClient } from 'react-query';
+import { useQueries, useQueryClient, UseQueryOptions } from 'react-query';
 import styled from 'styled-components/native';
+import { BaseResponse } from '../@types/movie';
 import { movieAPI } from '../Api';
 import { HMedia, Slide, VMedia } from '../components';
 import { Seperator } from '../components/Seperator';
 
 const Container = styled.FlatList`
   background-color: ${(props) => props.theme.bgColor};
-`;
+` as unknown as typeof FlatList;
 
 const Loader = styled.View`
   background-color: ${(props) => props.theme.bgColor};
@@ -53,7 +54,7 @@ export function Movies() {
       data: trending,
       isRefetching: isRefetchingTrending,
     },
-  ] = useQueries([
+  ] = useQueries<UseQueryOptions<BaseResponse>[]>([
     { queryKey: ['movies', 'nowPlaying'], queryFn: movieAPI.nowPlaying },
     { queryKey: ['movies', 'upcoming'], queryFn: movieAPI.upcoming },
     { queryKey: ['movies', 'trending'], queryFn: movieAPI.trending },
@@ -64,21 +65,6 @@ export function Movies() {
   const onRefresh = () => {
     queryClient.refetchQueries(['movies']);
   };
-  const renderVMedia = ({ item }) => (
-    <VMedia
-      imgPath={item.poster_path}
-      title={item.original_title}
-      rating={item.vote_average}
-    />
-  );
-  const renderHMedia = ({ item }) => (
-    <HMedia
-      imgPath={item.poster_path}
-      title={item.original_title}
-      overview={item.overview}
-      releaseDate={item.release_date}
-    />
-  );
 
   const renderSeperator =
     ({
@@ -104,7 +90,7 @@ export function Movies() {
     <Container
       onRefresh={onRefresh}
       refreshing={refreshing}
-      data={upcoming.results}
+      data={upcoming?.results}
       ListHeaderComponent={
         <>
           <Swiper
@@ -120,7 +106,7 @@ export function Movies() {
               marginBottom: 25,
             }}
           >
-            {nowPlaying.results.map((movie) => (
+            {nowPlaying?.results.map((movie) => (
               <Slide
                 key={movie.id}
                 backdropImgPath={movie.backdrop_path}
@@ -135,7 +121,7 @@ export function Movies() {
           <ListContainer>
             <ListTitle>Trending Movies</ListTitle>
             <FlatList
-              data={trending.results}
+              data={trending?.results}
               horizontal
               showsHorizontalScrollIndicator={false}
               keyExtractor={({ id }) => id + ''}
@@ -147,7 +133,13 @@ export function Movies() {
                 paddingHorizontal: 25,
                 marginTop: 20,
               }}
-              renderItem={renderVMedia}
+              renderItem={({ item }) => (
+                <VMedia
+                  imgPath={item.poster_path}
+                  title={item.original_title}
+                  rating={item.vote_average}
+                />
+              )}
             />
           </ListContainer>
           <ListTitle>Up coming</ListTitle>
@@ -157,7 +149,14 @@ export function Movies() {
         variant: 'vertical',
         space: 10,
       })}
-      renderItem={renderHMedia}
+      renderItem={({ item }) => (
+        <HMedia
+          imgPath={item.poster_path}
+          title={item.original_title}
+          overview={item.overview}
+          releaseDate={item.release_date}
+        />
+      )}
     />
   );
 }

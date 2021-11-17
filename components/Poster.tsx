@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { makeImgPath } from '../util';
 
 interface IProps {
-  path: string;
+  path: string | null;
 }
 
 const PosterImage = styled.Image`

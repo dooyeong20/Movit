@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 interface IProps {
-  rating: string;
+  rating: number;
   total: string;
 }
 
