@@ -1,4 +1,4 @@
-export const getText = (text: string, size: number) => {
+export const getText = (text: string | undefined | null, size: number) => {
   if (!text) {
     return '...';
   }

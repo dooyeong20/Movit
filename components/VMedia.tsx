@@ -16,9 +16,9 @@ const Title = styled.Text`
 `;
 
 interface IProps {
-  imgPath: string;
+  imgPath: string | null;
   title: string;
-  rating: string;
+  rating: number;
 }
 
 export function VMedia({ imgPath, title, rating }: IProps) {

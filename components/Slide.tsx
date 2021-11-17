@@ -6,10 +6,10 @@ import { Poster } from './Poster';
 
 interface IProps {
   originalTitle: string;
-  backdropImgPath: string;
-  posterImgPath: string;
-  rating: string;
-  overview: string;
+  backdropImgPath: string | null;
+  posterImgPath: string | null;
+  rating: number;
+  overview: string | undefined | null;
 }
 
 const BgImg = styled.ImageBackground`

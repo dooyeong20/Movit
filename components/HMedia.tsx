@@ -5,11 +5,11 @@ import { getFormatDate, getText } from '../util';
 import { Poster } from './Poster';
 
 interface IProps {
-  imgPath: string;
+  imgPath: string | null;
   title: string;
-  overview: string;
+  overview: string | undefined | null;
   releaseDate?: string;
-  rating?: string;
+  rating?: number;
 }
 
 const HMovie = styled.View`
