@@ -3,7 +3,7 @@ import { RefreshControl } from 'react-native';
 import { ScrollView } from 'react-native';
 import { useQueries, useQueryClient, UseQueryOptions } from 'react-query';
 import { BaseResponse } from '../@types';
-import { tvAPI } from '../Api/tv';
+import { tvAPI } from '../Api';
 import { HList } from '../components';
 import { Loader } from '../components/Loader';
 
