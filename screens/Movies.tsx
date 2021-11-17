@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList } from 'react-native';
 import Swiper from 'react-native-swiper';
+import { useQuery } from 'react-query';
 import styled from 'styled-components/native';
+import { movieAPI } from '../Api';
 import { HMedia, Slide, VMedia } from '../components';
 import { Seperator } from '../components/Seperator';
-
-const API_KEY = '59ee2230f87d37d483a3a52eb8235751';
 
 const Container = styled.FlatList`
   background-color: ${(props) => props.theme.bgColor};
@@ -37,46 +37,20 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export function Movies() {
   const [refreshing, setRefreshing] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [nowPlaying, setNowPlaying] = useState<any[]>([]);
-  const [upcoming, setUpcoming] = useState<any[]>([]);
-  const [trending, setTrending] = useState<any[]>([]);
-
-  const getTrending = async () => {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/trending/all/week?api_key=${API_KEY}`
-    );
-    const { results } = await res.json();
-    setTrending(results);
-  };
-
-  const getUpComing = async () => {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1&region=US`
-    );
-    const { results } = await res.json();
-    setUpcoming(results);
-  };
-
-  const getNowPlaying = async () => {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=US`
-    );
-    const { results } = await res.json();
-    setNowPlaying(results);
-  };
-
-  const getData = async () => {
-    await Promise.all([getNowPlaying(), getTrending(), getUpComing()]);
-    setLoading(false);
-  };
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await getData();
-    setRefreshing(false);
-  };
-
+  const { isLoading: nowPlayingLoading, data: nowPlaying } = useQuery(
+    'nowPlaying',
+    movieAPI.nowPlaying
+  );
+  const { isLoading: upcomingLoading, data: upcoming } = useQuery(
+    'upcoming',
+    movieAPI.upcoming
+  );
+  const { isLoading: trendingLoading, data: trending } = useQuery(
+    'trending',
+    movieAPI.trending
+  );
+  const isLoading = upcomingLoading || trendingLoading || nowPlayingLoading;
+  const onRefresh = async () => {};
   const renderVMedia = ({ item }) => (
     <VMedia
       imgPath={item.poster_path}
@@ -84,7 +58,6 @@ export function Movies() {
       rating={item.vote_average}
     />
   );
-
   const renderHMedia = ({ item }) => (
     <HMedia
       imgPath={item.poster_path}
@@ -107,11 +80,10 @@ export function Movies() {
       <Seperator variant={variant} space={space} />;
 
   useEffect(() => {
-    getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return loading ? (
+  return isLoading ? (
     <Loader>
       <ActivityIndicator color="" size="large" />
     </Loader>
@@ -119,7 +91,7 @@ export function Movies() {
     <Container
       onRefresh={onRefresh}
       refreshing={refreshing}
-      data={upcoming}
+      data={upcoming.results}
       ListHeaderComponent={
         <>
           <Swiper
@@ -135,7 +107,7 @@ export function Movies() {
               marginBottom: 25,
             }}
           >
-            {nowPlaying.map((movie) => (
+            {nowPlaying.results.map((movie) => (
               <Slide
                 key={movie.id}
                 backdropImgPath={movie.backdrop_path}
@@ -150,7 +122,7 @@ export function Movies() {
           <ListContainer>
             <ListTitle>Trending Movies</ListTitle>
             <FlatList
-              data={trending}
+              data={trending.results}
               horizontal
               showsHorizontalScrollIndicator={false}
               keyExtractor={({ id }) => id + ''}
