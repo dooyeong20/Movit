@@ -1,5 +1,5 @@
 import fetchMock from 'jest-fetch-mock';
-import { movieAPI, tvAPI } from '../Api';
+import { movieAPI, tvAPI, searchAPI } from '../Api';
 
 describe('Test for APIs', () => {
   beforeEach(() => {
@@ -60,5 +60,31 @@ describe('Test for APIs', () => {
 
     expect(data).toHaveProperty('results');
     expect(data.results).not.toHaveLength(0);
+  });
+
+  test('Serach Movie API Test', async () => {
+    const data = await searchAPI.movies({
+      queryKey: ['some', 'query'],
+      meta: undefined,
+      pageParam: {},
+      signal: undefined,
+    });
+
+    expect(data).toHaveProperty('results');
+    expect(data.results).not.toHaveLength(0);
+    expect(data).not.toHaveProperty('Error');
+  });
+
+  test('Serach TV Shows API Test', async () => {
+    const data = await searchAPI.tvShows({
+      queryKey: ['some', 'query'],
+      meta: undefined,
+      pageParam: {},
+      signal: undefined,
+    });
+
+    expect(data).toHaveProperty('results');
+    expect(data.results).not.toHaveLength(0);
+    expect(data).not.toHaveProperty('Error');
   });
 });
