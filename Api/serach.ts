@@ -4,7 +4,6 @@ import { API_KEY, BASE_URL } from '../const';
 const movies = ({ queryKey }: QueryFunctionContext) => {
   const [_, query] = queryKey;
 
-  console.log(query);
   return fetch(
     `${BASE_URL}/search/movie?api_key=${API_KEY}&language=ko-KR&page=1&query=${query}`
   ).then((res) => res.json());
