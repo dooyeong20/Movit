@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import { Vote } from './Vote';
 import { getText, makeImgPath } from '../util';
 import { Poster } from './Poster';
+import { useNavigation } from '@react-navigation/native';
 
 interface IProps {
   originalTitle: string;
@@ -59,8 +60,13 @@ export function Slide({
   rating,
   originalTitle,
 }: IProps) {
+  const navigation = useNavigation();
+  const handleClickMovie = () => {
+    navigation.navigate('Stacks', { screen: 'Detail' });
+  };
+
   return (
-    <MovieView activeOpacity={0.6}>
+    <MovieView activeOpacity={0.6} onPress={handleClickMovie}>
       <BgImg
         source={{
           uri: makeImgPath(backdropImgPath),

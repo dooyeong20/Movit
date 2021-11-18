@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import { Vote } from './Vote';
 import { getFormatDate, getText } from '../util';
 import { Poster } from './Poster';
+import { useNavigation } from '@react-navigation/native';
 
 interface IProps {
   imgPath: string | null;
@@ -48,8 +49,13 @@ export function HMedia({
   releaseDate,
   rating,
 }: IProps) {
+  const navigation = useNavigation();
+  const handleClickMovie = () => {
+    navigation.navigate('Stacks', { screen: 'Detail' });
+  };
+
   return (
-    <HMovie activeOpacity={0.7}>
+    <HMovie activeOpacity={0.7} onPress={handleClickMovie}>
       <Poster path={imgPath} />
       <HColumn>
         <Title>{getText(title, 30)}</Title>
