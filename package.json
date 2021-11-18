@@ -21,6 +21,7 @@
     "expo-status-bar": "~1.1.0",
     "expo-updates": "~0.10.5",
     "jest-fetch-mock": "^3.0.3",
+    "lodash": "^4.17.21",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
@@ -36,6 +37,7 @@
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/jest": "^27.0.2",
+    "@types/lodash": "^4.14.177",
     "@types/react": "^17.0.34",
     "@types/react-native": "^0.66.2",
     "@types/react-test-renderer": "^17.0.1",
