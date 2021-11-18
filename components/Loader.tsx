@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components/native';
 
 const LoaderContainer = styled.View`
-  background-color: ${(props) => props.theme.bgColor};
   flex: 1;
   justify-content: center;
   align-items: center;
