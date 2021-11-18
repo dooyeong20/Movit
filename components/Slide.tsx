@@ -4,6 +4,7 @@ import { Vote } from './Vote';
 import { getText, makeImgPath } from '../util';
 import { Poster } from './Poster';
 import { useNavigation } from '@react-navigation/native';
+import { Result } from '../@types';
 
 interface IProps {
   originalTitle: string;
@@ -11,6 +12,7 @@ interface IProps {
   posterImgPath: string | null;
   rating: number;
   overview: string | undefined | null;
+  fullData: Result;
 }
 
 const BgImg = styled.ImageBackground`
@@ -59,10 +61,17 @@ export function Slide({
   posterImgPath,
   rating,
   originalTitle,
+  fullData,
 }: IProps) {
   const navigation = useNavigation();
   const handleClickMovie = () => {
-    navigation.navigate('Stacks', { screen: 'Detail' });
+    // @ts-ignore
+    navigation.navigate('Stacks', {
+      screen: 'Detail',
+      params: {
+        ...fullData,
+      },
+    });
   };
 
   return (

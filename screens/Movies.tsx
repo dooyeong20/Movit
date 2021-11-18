@@ -79,10 +79,11 @@ export function Movies() {
               <Slide
                 key={movie.id}
                 backdropImgPath={movie.backdrop_path}
-                originalTitle={movie.original_title}
+                originalTitle={movie.title || movie.original_title}
                 posterImgPath={movie.poster_path}
                 rating={movie.vote_average}
                 overview={movie.overview}
+                fullData={movie}
               />
             ))}
           </Swiper>
@@ -98,9 +99,10 @@ export function Movies() {
       renderItem={({ item }) => (
         <HMedia
           imgPath={item.poster_path}
-          title={item.original_title}
+          title={item.title || item.original_title}
           overview={item.overview}
           releaseDate={item.release_date}
+          fullData={item}
         />
       )}
     />

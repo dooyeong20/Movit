@@ -4,6 +4,7 @@ import { Vote } from './Vote';
 import { Poster } from './Poster';
 import { getText } from '../util';
 import { useNavigation } from '@react-navigation/native';
+import { Result } from '../@types';
 
 const Movie = styled.TouchableOpacity`
   align-items: center;
@@ -20,12 +21,20 @@ interface IProps {
   imgPath: string | null;
   title: string;
   rating: number;
+  fullData: Result;
 }
 
-export function VMedia({ imgPath, title, rating }: IProps) {
+export function VMedia({ imgPath, title, rating, fullData }: IProps) {
   const navigation = useNavigation();
+
   const handleClickMovie = () => {
-    navigation.navigate('Stacks', { screen: 'Detail' });
+    // @ts-ignore
+    navigation.navigate('Stacks', {
+      screen: 'Detail',
+      params: {
+        ...fullData,
+      },
+    });
   };
 
   return (

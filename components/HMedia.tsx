@@ -4,6 +4,7 @@ import { Vote } from './Vote';
 import { getFormatDate, getText } from '../util';
 import { Poster } from './Poster';
 import { useNavigation } from '@react-navigation/native';
+import { Result } from '../@types';
 
 interface IProps {
   imgPath: string | null;
@@ -11,9 +12,10 @@ interface IProps {
   overview: string | undefined | null;
   releaseDate?: string;
   rating?: number;
+  fullData: Result;
 }
 
-const HMovie = styled.TouchableOpacity`
+const Container = styled.TouchableOpacity`
   padding: 0 25px;
   flex-direction: row;
   margin-top: 20px;
@@ -48,14 +50,21 @@ export function HMedia({
   overview,
   releaseDate,
   rating,
+  fullData,
 }: IProps) {
   const navigation = useNavigation();
   const handleClickMovie = () => {
-    navigation.navigate('Stacks', { screen: 'Detail' });
+    // @ts-ignore
+    navigation.navigate('Stacks', {
+      screen: 'Detail',
+      params: {
+        ...fullData,
+      },
+    });
   };
 
   return (
-    <HMovie activeOpacity={0.7} onPress={handleClickMovie}>
+    <Container activeOpacity={0.7} onPress={handleClickMovie}>
       <Poster path={imgPath} />
       <HColumn>
         <Title>{getText(title, 30)}</Title>
@@ -63,6 +72,6 @@ export function HMedia({
         {rating && <Vote rating={rating} total="10" />}
         <Overview>{getText(overview, 100)}</Overview>
       </HColumn>
-    </HMovie>
+    </Container>
   );
 }

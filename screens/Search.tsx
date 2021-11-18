@@ -47,7 +47,7 @@ export default function Search() {
   const isLoading = movieLoading || tvLoading;
 
   return (
-    <Container contentContainerStyle={{}}>
+    <Container>
       <SearchBar
         placeholder="Search Movies or TV Shows"
         placeholderTextColor={textColor}
