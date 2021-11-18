@@ -7,4 +7,7 @@
 ## Component Structure
 
 <img src="./structure.png">
-작성 중 ...
+
+## Structure
+
+<img src="./structure2.png">
