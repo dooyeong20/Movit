@@ -12,13 +12,14 @@ interface IProps {
 
 const ListTitle = styled.Text`
   color: ${(props) => props.theme.textColor};
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
 
   margin-bottom: 20px;
 `;
 
 const ListContainer = styled.View`
+  padding: 0 20px;
   margin-bottom: 40px;
 `;
 

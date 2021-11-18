@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, FlatList } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useQueries, useQueryClient, UseQueryOptions } from 'react-query';
@@ -10,7 +10,7 @@ import { Seperator } from '../components/Seperator';
 
 const ListTitle = styled.Text`
   color: ${(props) => props.theme.textColor};
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
   margin-left: 25px;
 `;
@@ -19,32 +19,22 @@ const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 export function Movies() {
   const queryClient = useQueryClient();
+  const [refreshing, setRefreshing] = useState(false);
   const [
-    {
-      isLoading: nowPlayingLoading,
-      data: nowPlaying,
-      isRefetching: isRefetchingNowPlaying,
-    },
-    {
-      isLoading: upcomingLoading,
-      data: upcoming,
-      isRefetching: isRefetchingUpcoming,
-    },
-    {
-      isLoading: trendingLoading,
-      data: trending,
-      isRefetching: isRefetchingTrending,
-    },
+    { isLoading: nowPlayingLoading, data: nowPlaying },
+    { isLoading: upcomingLoading, data: upcoming },
+    { isLoading: trendingLoading, data: trending },
   ] = useQueries<UseQueryOptions<BaseResponse>[]>([
     { queryKey: ['movies', 'nowPlaying'], queryFn: movieAPI.nowPlaying },
     { queryKey: ['movies', 'upcoming'], queryFn: movieAPI.upcoming },
     { queryKey: ['movies', 'trending'], queryFn: movieAPI.trending },
   ]);
   const isLoading = upcomingLoading || trendingLoading || nowPlayingLoading;
-  const refreshing =
-    isRefetchingNowPlaying || isRefetchingUpcoming || isRefetchingTrending;
-  const onRefresh = () => {
-    queryClient.refetchQueries(['movies']);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await queryClient.refetchQueries(['movies']);
+    setRefreshing(false);
   };
 
   const renderSeperator =

@@ -20,6 +20,6 @@ export type Result = {
 export type BaseResponse = {
   page: number;
   results: Result[];
-  total_result: number;
+  total_results: number;
   total_pages: number;
 };
