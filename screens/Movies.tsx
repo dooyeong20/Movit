@@ -53,13 +53,15 @@ export function Movies() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return isLoading ? (
-    <Loader />
-  ) : (
+  if (isLoading) {
+    return <Loader />;
+  }
+  return (
     <FlatList
       onRefresh={onRefresh}
       refreshing={refreshing}
       data={upcoming?.results}
+      contentContainerStyle={{ paddingBottom: 20 }}
       ListHeaderComponent={
         <>
           <Swiper

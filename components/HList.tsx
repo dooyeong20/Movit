@@ -20,7 +20,7 @@ const ListTitle = styled.Text`
 
 const ListContainer = styled.View`
   padding: 0 20px;
-  margin-bottom: 40px;
+  margin: 20px 0;
 `;
 
 export function HList({ title, data }: IProps) {
