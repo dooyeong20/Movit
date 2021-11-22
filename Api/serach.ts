@@ -1,4 +1,3 @@
-import { QueryFunctionContext } from 'react-query';
 import { Tfetcher } from '../@types';
 import { API_KEY, BASE_URL } from '../const';
 
