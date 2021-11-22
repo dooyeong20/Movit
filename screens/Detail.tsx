@@ -128,7 +128,9 @@ export function Detail({
             <Genre key={id} name={name} />
           ))}
         </GenreContainer>
-        <Overview>{params.overview}</Overview>
+        <Overview>
+          {params.overview || 'Sorry. No overview for this content right now.'}
+        </Overview>
         {isLoading ? <Loader /> : null}
         {data?.videos?.results?.map(
           (video: { id: string; name: string; key: string }) => (
