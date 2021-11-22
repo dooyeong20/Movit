@@ -1,12 +1,15 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Linking } from 'react-native';
 import { useQuery } from 'react-query';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
 import { DetailProps } from '../@types';
 import { movieAPI, tvAPI } from '../Api';
 import { Genre, Loader, Poster, VideoLink } from '../components';
 import { makeImgPath } from '../util';
+import reviewList from '../DB/reviews.json';
+import Review from '../components/Review';
+import _ from 'lodash';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const Container = styled.ScrollView`
@@ -34,15 +37,28 @@ const Overview = styled.Text`
   color: ${(props) => props.theme.textColor};
   font-size: 15px;
   margin: 20px 0;
+  margin-top: 15px;
 `;
-
 const Data = styled.View`
   padding: 0 20px;
 `;
-
+const ReviewTitle = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+const ReviewInput = styled.TextInput`
+  border: 1px ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
+  border-radius: 500px;
+  padding: 2px 12px;
+  margin-top: 10px;
+`;
 const GenreContainer = styled.View`
   flex-direction: row;
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
 export function Detail({
@@ -54,6 +70,9 @@ export function Detail({
     [isMovie ? 'movie' : 'tv', params.id],
     isMovie ? movieAPI.detail : tvAPI.detail
   );
+  const [reviews, setReviews] = useState(_.shuffle(reviewList).slice(0, 2));
+  const [text, setText] = useState('');
+  const { textColor } = useTheme();
   const detailTitle =
     params.title ||
     params.original_title ||
@@ -71,9 +90,23 @@ export function Detail({
     const url = `https://m.youtube.com/watch?v=${videoId}`;
     await Linking.openURL(url);
   };
+  const handleChangeText = (text: string) => {
+    setText(text);
+  };
+  const handleSubmit = () => {
+    setReviews([
+      ...reviews,
+      { id: _.uniqueId('id'), author: 'Guest', comment: text },
+    ]);
+    setText('');
+  };
 
   return (
-    <Container>
+    <Container
+      contentContainerStyle={{
+        paddingBottom: 30,
+      }}
+    >
       <Header>
         <Background
           style={StyleSheet.absoluteFill}
@@ -97,14 +130,34 @@ export function Detail({
         </GenreContainer>
         <Overview>{params.overview}</Overview>
         {isLoading ? <Loader /> : null}
-        {data?.videos?.results?.map((video: any) => (
-          <VideoLink
-            key={video.id}
-            onPressLink={handleClickLink}
-            title={video.name}
-            videoId={video.key}
+        {data?.videos?.results?.map(
+          (video: { id: string; name: string; key: string }) => (
+            <VideoLink
+              key={video.id}
+              onPressLink={handleClickLink}
+              title={video.name}
+              videoId={video.key}
+            />
+          )
+        )}
+        <ReviewTitle>Reviews</ReviewTitle>
+        {reviews.map((review) => (
+          <Review
+            key={review.id}
+            author={review.author}
+            comment={review.comment}
           />
         ))}
+        {
+          <ReviewInput
+            placeholder="리뷰를 써보세요!"
+            placeholderTextColor={textColor}
+            onChangeText={handleChangeText}
+            onSubmitEditing={handleSubmit}
+          >
+            {text}
+          </ReviewInput>
+        }
       </Data>
     </Container>
   );
