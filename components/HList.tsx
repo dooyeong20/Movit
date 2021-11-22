@@ -20,7 +20,7 @@ const ListTitle = styled.Text`
 
 const ListContainer = styled.View`
   padding: 0 20px;
-  margin-bottom: 40px;
+  margin: 20px 0;
 `;
 
 export function HList({ title, data }: IProps) {
@@ -37,9 +37,15 @@ export function HList({ title, data }: IProps) {
         )}
         renderItem={({ item }) => (
           <VMedia
-            imgPath={item.backdrop_path}
+            imgPath={item.poster_path}
             rating={item.vote_average}
-            title={item.name ?? item.title}
+            title={
+              item.name ||
+              item.title ||
+              item.original_name ||
+              item.original_title
+            }
+            fullData={item}
           />
         )}
       />

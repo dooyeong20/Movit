@@ -1,7 +1,7 @@
 import React from 'react';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
-import { Tabs } from './Tabs';
 import { useTheme } from 'styled-components/native';
+import { Root } from './Root';
 
 export default function MainNavigator() {
   const { bgColor, textColor } = useTheme();
@@ -15,7 +15,7 @@ export default function MainNavigator() {
   };
   return (
     <NavigationContainer theme={myTheme}>
-      <Tabs />
+      <Root />
     </NavigationContainer>
   );
 }

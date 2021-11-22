@@ -5,3 +5,5 @@ export * from './VMedia';
 export * from './Vote';
 export * from './Loader';
 export * from './HList';
+export * from './VideoLink';
+export * from './Genre';
