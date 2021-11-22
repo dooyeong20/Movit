@@ -1,8 +1,9 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
-import { Dimensions, StyleSheet, Linking } from 'react-native';
+import { Dimensions, StyleSheet, Linking, Share } from 'react-native';
 import { useQuery } from 'react-query';
 import styled, { useTheme } from 'styled-components/native';
+import { Ionicons } from '@expo/vector-icons';
 import { DetailProps } from '../@types';
 import { movieAPI, tvAPI } from '../Api';
 import { Genre, Loader, Poster, VideoLink } from '../components';
@@ -10,6 +11,7 @@ import { makeImgPath } from '../util';
 import reviewList from '../DB/reviews.json';
 import Review from '../components/Review';
 import _ from 'lodash';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const Container = styled.ScrollView`
@@ -78,13 +80,24 @@ export function Detail({
     params.original_title ||
     params.name ||
     params.original_name;
+  const handleShare = () => {
+    Share.share({
+      message: `https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${detailTitle}`,
+      title: detailTitle,
+    });
+  };
 
   useEffect(() => {
     setOptions({
       title:
         'original_title' in params || 'title' in params ? 'Movie' : 'TV Show',
+      headerRight: () => (
+        <TouchableOpacity onPress={handleShare}>
+          <Ionicons name="share-outline" size={24} color={textColor}></Ionicons>
+        </TouchableOpacity>
+      ),
     });
-  }, [detailTitle, params, setOptions]);
+  }, [detailTitle, params, setOptions, textColor]);
 
   const handleClickLink = (videoId: string) => async () => {
     const url = `https://m.youtube.com/watch?v=${videoId}`;
