@@ -1,12 +1,18 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect } from 'react';
-import { Dimensions, StyleSheet, Linking } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Dimensions, StyleSheet, Linking, Share } from 'react-native';
 import { useQuery } from 'react-query';
-import styled from 'styled-components/native';
+import styled, { useTheme } from 'styled-components/native';
+import { Ionicons } from '@expo/vector-icons';
 import { DetailProps } from '../@types';
 import { movieAPI, tvAPI } from '../Api';
 import { Genre, Loader, Poster, VideoLink } from '../components';
 import { makeImgPath } from '../util';
+import reviewList from '../DB/reviews.json';
+import Review from '../components/Review';
+import _ from 'lodash';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Theater } from '../components/Theater';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const Container = styled.ScrollView`
@@ -34,15 +40,28 @@ const Overview = styled.Text`
   color: ${(props) => props.theme.textColor};
   font-size: 15px;
   margin: 20px 0;
+  margin-top: 10px;
 `;
-
 const Data = styled.View`
   padding: 0 20px;
 `;
-
+const ReviewTitle = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+const ReviewInput = styled.TextInput`
+  border: 1px ${(props) => props.theme.textColor};
+  color: ${(props) => props.theme.textColor};
+  border-radius: 500px;
+  padding: 2px 12px;
+  margin-top: 10px;
+`;
 const GenreContainer = styled.View`
   flex-direction: row;
-  margin-top: 5px;
+  margin-top: 10px;
 `;
 
 export function Detail({
@@ -54,26 +73,54 @@ export function Detail({
     [isMovie ? 'movie' : 'tv', params.id],
     isMovie ? movieAPI.detail : tvAPI.detail
   );
+  const [reviews, setReviews] = useState(_.shuffle(reviewList).slice(0, 2));
+  const [text, setText] = useState('');
+  const { textColor } = useTheme();
   const detailTitle =
     params.title ||
     params.original_title ||
     params.name ||
     params.original_name;
+  const handleShare = useCallback(() => {
+    Share.share({
+      message: `https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${detailTitle}`,
+      title: detailTitle,
+    });
+  }, [detailTitle]);
 
   useEffect(() => {
     setOptions({
       title:
         'original_title' in params || 'title' in params ? 'Movie' : 'TV Show',
+      headerRight: () => (
+        <TouchableOpacity onPress={handleShare}>
+          <Ionicons name="share-outline" size={24} color={textColor}></Ionicons>
+        </TouchableOpacity>
+      ),
     });
-  }, [detailTitle, params, setOptions]);
+  }, [detailTitle, handleShare, params, setOptions, textColor]);
 
   const handleClickLink = (videoId: string) => async () => {
     const url = `https://m.youtube.com/watch?v=${videoId}`;
     await Linking.openURL(url);
   };
+  const handleChangeText = (text: string) => {
+    setText(text);
+  };
+  const handleSubmit = () => {
+    setReviews([
+      ...reviews,
+      { id: _.uniqueId('id'), author: 'Guest', comment: text },
+    ]);
+    setText('');
+  };
 
   return (
-    <Container>
+    <Container
+      contentContainerStyle={{
+        paddingBottom: 30,
+      }}
+    >
       <Header>
         <Background
           style={StyleSheet.absoluteFill}
@@ -95,16 +142,39 @@ export function Detail({
             <Genre key={id} name={name} />
           ))}
         </GenreContainer>
-        <Overview>{params.overview}</Overview>
+        <Overview>
+          {params.overview || 'Sorry. No overview for this content right now.'}
+        </Overview>
+        <Theater />
         {isLoading ? <Loader /> : null}
-        {data?.videos?.results?.map((video: any) => (
-          <VideoLink
-            key={video.id}
-            onPressLink={handleClickLink}
-            title={video.name}
-            videoId={video.key}
+        {data?.videos?.results?.map(
+          (video: { id: string; name: string; key: string }) => (
+            <VideoLink
+              key={video.id}
+              onPressLink={handleClickLink}
+              title={video.name}
+              videoId={video.key}
+            />
+          )
+        )}
+        <ReviewTitle>Reviews</ReviewTitle>
+        {reviews.map((review) => (
+          <Review
+            key={review.id}
+            author={review.author}
+            comment={review.comment}
           />
         ))}
+        {
+          <ReviewInput
+            placeholder="리뷰를 써보세요!"
+            placeholderTextColor={textColor}
+            onChangeText={handleChangeText}
+            onSubmitEditing={handleSubmit}
+          >
+            {text}
+          </ReviewInput>
+        }
       </Data>
     </Container>
   );
