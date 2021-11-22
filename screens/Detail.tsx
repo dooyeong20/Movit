@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Linking, Share } from 'react-native';
 import { useQuery } from 'react-query';
 import styled, { useTheme } from 'styled-components/native';
@@ -81,12 +81,12 @@ export function Detail({
     params.original_title ||
     params.name ||
     params.original_name;
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     Share.share({
       message: `https://m.search.naver.com/search.naver?sm=mtp_hty.top&where=m&query=${detailTitle}`,
       title: detailTitle,
     });
-  };
+  }, [detailTitle]);
 
   useEffect(() => {
     setOptions({
