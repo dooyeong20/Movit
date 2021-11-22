@@ -12,6 +12,7 @@ import reviewList from '../DB/reviews.json';
 import Review from '../components/Review';
 import _ from 'lodash';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Theater } from '../components/Theater';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const Container = styled.ScrollView`
@@ -39,7 +40,7 @@ const Overview = styled.Text`
   color: ${(props) => props.theme.textColor};
   font-size: 15px;
   margin: 20px 0;
-  margin-top: 15px;
+  margin-top: 10px;
 `;
 const Data = styled.View`
   padding: 0 20px;
@@ -97,7 +98,7 @@ export function Detail({
         </TouchableOpacity>
       ),
     });
-  }, [detailTitle, params, setOptions, textColor]);
+  }, [detailTitle, handleShare, params, setOptions, textColor]);
 
   const handleClickLink = (videoId: string) => async () => {
     const url = `https://m.youtube.com/watch?v=${videoId}`;
@@ -144,6 +145,7 @@ export function Detail({
         <Overview>
           {params.overview || 'Sorry. No overview for this content right now.'}
         </Overview>
+        <Theater />
         {isLoading ? <Loader /> : null}
         {data?.videos?.results?.map(
           (video: { id: string; name: string; key: string }) => (
