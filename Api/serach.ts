@@ -1,7 +1,8 @@
 import { QueryFunctionContext } from 'react-query';
+import { Tfetcher } from '../@types';
 import { API_KEY, BASE_URL } from '../const';
 
-const movies = ({ queryKey }: QueryFunctionContext) => {
+const movies: Tfetcher = ({ queryKey }) => {
   const [_, query] = queryKey;
 
   return fetch(
@@ -9,7 +10,7 @@ const movies = ({ queryKey }: QueryFunctionContext) => {
   ).then((res) => res.json());
 };
 
-const tvShows = ({ queryKey }: QueryFunctionContext) => {
+const tvShows: Tfetcher = ({ queryKey }) => {
   const [_, query] = queryKey;
 
   return fetch(
