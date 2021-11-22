@@ -7,3 +7,6 @@ export const getText = (text: string | undefined | null, size: number) => {
 
   return text.length > size ? slicedText + '...' : slicedText;
 };
+
+export const getDetailTitle = (text: string) =>
+  text.replace(/\[([^]*)\]/g, '').trim();

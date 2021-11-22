@@ -1,4 +1,4 @@
-import { makeImgPath, getFormatDate, getText } from '../util';
+import { makeImgPath, getFormatDate, getText, getDetailTitle } from '../util';
 
 describe('Test for util functions', () => {
   test('Image path test (not undefined)', () => {
@@ -33,5 +33,17 @@ describe('Test for util functions', () => {
 
   test("Text slice test [getText('apple', 10) -> apple]", () => {
     expect(getText('apple', 10)).toBe('apple');
+  });
+
+  test("Detail text title without '[]' ([abc] abcde -> abcde)", () => {
+    expect(getDetailTitle('[Monster Hotel] Trailer')).toBe('Trailer');
+  });
+
+  test("Detail text title without '[]' ([] oranage -> orange)", () => {
+    expect(getDetailTitle('[] oranage')).toBe('oranage');
+  });
+
+  test("Detail text title without '[]' (oranage -> orange)", () => {
+    expect(getDetailTitle('oranage')).toBe('oranage');
   });
 });
