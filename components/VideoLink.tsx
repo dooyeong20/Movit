@@ -1,6 +1,6 @@
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import styled, { useTheme } from 'styled-components/native';
+import styled from 'styled-components/native';
 import { getDetailTitle } from '../util';
 
 interface IProps {
@@ -21,11 +21,9 @@ const BtnText = styled.Text`
 `;
 
 export function VideoLink({ onPressLink, videoId, title }: IProps) {
-  const { textColor } = useTheme();
-
   return (
     <VideoBtn activeOpacity={0.5} onPress={onPressLink(videoId)}>
-      <Ionicons name="logo-youtube" color={textColor} size={24} />
+      <Ionicons name="logo-youtube" color="#e84118" size={24} />
       <BtnText>{getDetailTitle(title)}</BtnText>
     </VideoBtn>
   );
