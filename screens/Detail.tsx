@@ -66,10 +66,7 @@ const ReviewInput = styled.TextInput`
   padding: 2px 12px;
   margin-top: 10px;
 `;
-const GenreContainer = styled.View`
-  flex-direction: row;
-  margin-top: 10px;
-`;
+const GenreContainer = styled.ScrollView``;
 
 export function Detail({
   route: { params },
@@ -174,7 +171,11 @@ export function Detail({
         </Column>
       </Header>
       <Data>
-        <GenreContainer>
+        <GenreContainer
+          contentContainerStyle={{ flexDirection: 'row', marginTop: 10 }}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        >
           {data?.genres?.map(({ id, name }: { name: string; id: number }) => (
             <Genre key={id} name={name} />
           ))}
