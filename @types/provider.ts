@@ -6,13 +6,13 @@ export enum ELikeType {
   'REMOVE_LIKE_ALL_ITEM' = 'likes/remove_all',
 }
 
-export type TLikeContext = {
-  state: object;
-  dispatch: Dispatch<TLikeAction>;
-};
-
 export type TLikeState = {
   likes: string[];
+};
+
+export type TLikeContext = {
+  state: TLikeState;
+  dispatch: Dispatch<TLikeAction>;
 };
 
 export type TLikeAction =
