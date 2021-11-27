@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Dimensions, FlatList } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useQueries, useQueryClient, UseQueryOptions } from 'react-query';
@@ -48,10 +48,6 @@ export function Movies() {
     // eslint-disable-next-line react/display-name
     () =>
       <Seperator variant={variant} space={space} />;
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   if (isLoading) {
     return <Loader />;
