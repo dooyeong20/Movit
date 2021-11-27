@@ -1,5 +1,12 @@
 import React, { createContext, useContext, useMemo, useReducer } from 'react';
-import { ELikeType, TLikeAction, TLikeContext, TLikeState } from '../@types';
+import {
+  ELikeType,
+  Result,
+  TLikeAction,
+  TLikeContext,
+  TLikeState,
+} from '../@types';
+import _ from 'lodash';
 
 const LikeContext = createContext<TLikeContext | null>(null);
 
@@ -17,7 +24,9 @@ const likeReducer = (state: TLikeState, action: TLikeAction): TLikeState => {
     case ELikeType.REMOVE_LIKE_ITEM:
       return {
         ...state,
-        likes: state.likes.filter((item) => item !== action.payload.item),
+        likes: state.likes.filter(
+          (item) => item.id + '' !== action.payload.item
+        ),
       };
     case ELikeType.REMOVE_LIKE_ALL_ITEM:
       return {
@@ -44,7 +53,7 @@ export const useLikeContext = () => {
   return context;
 };
 
-export const createLikeItemAction = (item: string): TLikeAction => ({
+export const createLikeItemAction = (item: Result): TLikeAction => ({
   type: ELikeType.SET_LIKE_ITEM,
   payload: { item },
 });

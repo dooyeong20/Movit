@@ -4,7 +4,7 @@ import { Dimensions, StyleSheet, Linking, Share } from 'react-native';
 import { useQuery } from 'react-query';
 import styled, { useTheme } from 'styled-components/native';
 import { AntDesign } from '@expo/vector-icons';
-import { DetailProps } from '../@types';
+import { DetailProps, Result } from '../@types';
 import { movieAPI, tvAPI } from '../Api';
 import { Genre, Loader, Poster, VideoLink } from '../components';
 import { makeImgPath } from '../util';
@@ -97,11 +97,11 @@ export function Detail({
   }, [detailTitle]);
   const handleLike = useCallback(() => {
     dispatch(
-      state.likes.includes(params.id + '')
+      state.likes.find((item) => item.id === params.id)
         ? createRemoveItemAction(params.id + '')
-        : createLikeItemAction(params.id + '')
+        : createLikeItemAction(params as Result)
     );
-  }, [dispatch, params.id, state.likes]);
+  }, [dispatch, params, state.likes]);
 
   useEffect(() => {
     setOptions({
@@ -109,9 +109,13 @@ export function Detail({
         'original_title' in params || 'title' in params ? 'Movie' : 'TV Show',
       headerRight: () => (
         <IconButtonWrapper>
-          <TouchableOpacity onPress={handleLike}>
+          <TouchableOpacity onPress={_.throttle(handleLike, 500)}>
             <AntDesign
-              name={state.likes.includes(params.id + '') ? 'heart' : 'hearto'}
+              name={
+                state.likes.find((item) => item.id === params.id)
+                  ? 'heart'
+                  : 'hearto'
+              }
               size={22}
               color={textColor}
               style={{ marginRight: 10 }}
