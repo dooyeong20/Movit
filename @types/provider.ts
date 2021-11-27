@@ -1,5 +1,11 @@
 import { Dispatch } from 'react';
 
+export enum ELikeType {
+  'SET_LIKE_ITEM' = 'likes/set',
+  'REMOVE_LIKE_ITEM' = 'likes/remove',
+  'REMOVE_LIKE_ALL_ITEM' = 'likes/remove_all',
+}
+
 export type TLikeContext = {
   state: object;
   dispatch: Dispatch<TLikeAction>;
@@ -10,6 +16,6 @@ export type TLikeState = {
 };
 
 export type TLikeAction =
-  | { type: 'LIKES/set'; payload: { item: string } }
-  | { type: 'LIKES/remove'; payload: { item: string } }
-  | { type: 'LIKES/remove_all' };
+  | { type: ELikeType.SET_LIKE_ITEM; payload: { item: string } }
+  | { type: ELikeType.REMOVE_LIKE_ITEM; payload: { item: string } }
+  | { type: ELikeType.REMOVE_LIKE_ALL_ITEM };
