@@ -5,6 +5,7 @@ import { Tv } from '../screens/Tv';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from 'styled-components/native';
 import Search from '../screens/Search';
+import { Likes } from '../screens/Likes';
 
 const Tab = createBottomTabNavigator();
 
@@ -53,6 +54,15 @@ export function Tabs() {
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="search-outline" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Likes"
+        component={Likes}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="heart-outline" color={color} size={size} />
           ),
         }}
       />
