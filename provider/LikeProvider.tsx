@@ -39,8 +39,7 @@ export function LikeProvider({ children }: { children: React.ReactNode }) {
 export const useLikeContext = () => {
   const context = useContext(LikeContext);
   if (!context) {
-    console.error('Error: No Like Provider');
-    return;
+    throw new Error('Error: Like Provider Not Found');
   }
   return context;
 };
