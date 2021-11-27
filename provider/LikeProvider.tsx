@@ -43,3 +43,17 @@ export const useLikeContext = () => {
   }
   return context;
 };
+
+export const createLikeItemAction = (item: string): TLikeAction => ({
+  type: ELikeType.SET_LIKE_ITEM,
+  payload: { item },
+});
+
+export const createRemoveItemAction = (item: string): TLikeAction => ({
+  type: ELikeType.REMOVE_LIKE_ITEM,
+  payload: { item },
+});
+
+export const createRemoveAllItemAction = (): TLikeAction => ({
+  type: ELikeType.REMOVE_LIKE_ALL_ITEM,
+});
