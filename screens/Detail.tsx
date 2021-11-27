@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Dimensions, StyleSheet, Linking, Share } from 'react-native';
 import { useQuery } from 'react-query';
 import styled, { useTheme } from 'styled-components/native';
-import { Ionicons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { DetailProps } from '../@types';
 import { movieAPI, tvAPI } from '../Api';
 import { Genre, Loader, Poster, VideoLink } from '../components';
@@ -13,6 +13,11 @@ import Review from '../components/Review';
 import _ from 'lodash';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Theater } from '../components/Theater';
+import {
+  createLikeItemAction,
+  createRemoveItemAction,
+  useLikeContext,
+} from '../provider/LikeProvider';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const Container = styled.ScrollView`
@@ -35,7 +40,9 @@ const Title = styled.Text`
   margin-left: 20px;
   align-self: flex-end;
 `;
-
+const IconButtonWrapper = styled.View`
+  flex-direction: row;
+`;
 const Overview = styled.Text`
   color: ${(props) => props.theme.textColor};
   font-size: 15px;
@@ -76,6 +83,7 @@ export function Detail({
   const [reviews, setReviews] = useState(_.shuffle(reviewList).slice(0, 2));
   const [text, setText] = useState('');
   const { textColor } = useTheme();
+  const { state, dispatch } = useLikeContext();
   const detailTitle =
     params.title ||
     params.original_title ||
@@ -87,18 +95,43 @@ export function Detail({
       title: detailTitle,
     });
   }, [detailTitle]);
+  const handleLike = useCallback(() => {
+    dispatch(
+      state.likes.includes(params.id + '')
+        ? createRemoveItemAction(params.id + '')
+        : createLikeItemAction(params.id + '')
+    );
+  }, [dispatch, params.id, state.likes]);
 
   useEffect(() => {
     setOptions({
       title:
         'original_title' in params || 'title' in params ? 'Movie' : 'TV Show',
       headerRight: () => (
-        <TouchableOpacity onPress={handleShare}>
-          <Ionicons name="share-outline" size={24} color={textColor}></Ionicons>
-        </TouchableOpacity>
+        <IconButtonWrapper>
+          <TouchableOpacity onPress={handleLike}>
+            <AntDesign
+              name={state.likes.includes(params.id + '') ? 'heart' : 'hearto'}
+              size={22}
+              color={textColor}
+              style={{ marginRight: 10 }}
+            ></AntDesign>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleShare}>
+            <AntDesign name="sharealt" size={22} color={textColor}></AntDesign>
+          </TouchableOpacity>
+        </IconButtonWrapper>
       ),
     });
-  }, [detailTitle, handleShare, params, setOptions, textColor]);
+  }, [
+    detailTitle,
+    handleLike,
+    handleShare,
+    params,
+    setOptions,
+    state.likes,
+    textColor,
+  ]);
 
   const handleClickLink = (videoId: string) => async () => {
     const url = `https://m.youtube.com/watch?v=${videoId}`;
