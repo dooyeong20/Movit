@@ -1,8 +1,34 @@
 # Modeling
 
-## 1. Service flow
+## 1. Component Structure
+
+<img src="./structure.png">
+
+- App 컴포넌트가 모든 탭들을 관리할 수 있도록 한다.
+  - Movies
+  - TV
+  - Search
+  - Likes
+- 각각의 탭들은 본인만의 상태를 가지고 있다.
+- 사용자가 요청한 탭 화면을 렌더링 해주며, 내부 컨텐츠는 외부의 DB로부터 받아온다.
+
+## 2. Service Flow
+
+### Simple Flow
 
 <img src="./movit_model.png" />
+
+### Contents Rendering Flow
+
+<img src="./flow1.png" />
+
+### User Requirements Flow
+
+<img src="./flow2.png" />
+
+## Outer Service Flow
+
+<img src="./flow3.png" />
 
 ### 사용자 관점
 
@@ -37,19 +63,3 @@
 - (5-2) 예고편, 시네마틱 영상 등의 영상을 확인할 수 있도록 연동하는 버튼을 제공한다.
 - (5-3) 네이버에서 바로 검색할 수 있도록 네이버 검색 링크를 바로 공유할 수 있도록 해준다.
 - (5-4) 사용자가 리뷰를 달 경우 해당 컨텐츠에 해당하는 DB 정보에 리뷰를 추가한다.
-
-## 2. Component Structure
-
-<img src="./structure.png">
-
-- App 컴포넌트가 모든 탭들을 관리할 수 있도록 한다.
-  - Movies
-  - TV
-  - Search
-  - Likes
-- 각각의 탭들은 본인만의 상태를 가지고 있다.
-- 사용자가 요청한 탭 화면을 렌더링 해주며, 내부 컨텐츠는 외부의 DB로부터 받아온다.
-
-## 3. Structure
-
-<img src="./structure2.png">
