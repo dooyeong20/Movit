@@ -27,7 +27,7 @@ export default function Review({ author, comment }: IProps) {
           color: author === 'Guest' ? '#6ab04c' : textColor,
         }}
       >
-        {author === 'Guest' ? '⭐️' : '⚡️'} {author}
+        {author === 'Guest' ? '☆' : '★'} {author}
       </ReviewAuthor>
       <ReviewComment
         style={{
