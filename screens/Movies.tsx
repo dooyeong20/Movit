@@ -67,6 +67,7 @@ export function Movies() {
             autoplayTimeout={4}
             showsButtons={false}
             showsPagination={false}
+            showsHorizontalScrollIndicator={true}
             containerStyle={{
               width: '100%',
               height: SCREEN_HEIGHT / 4,
