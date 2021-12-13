@@ -183,7 +183,7 @@ export function Detail({
         <Overview>
           {params.overview || 'Sorry. No overview for this content right now.'}
         </Overview>
-        <Theater />
+        {'original_title' in params || ('title' in params && <Theater />)}
         {isLoading ? <Loader /> : null}
         {data?.videos?.results?.map(
           (video: { id: string; name: string; key: string }) => (
