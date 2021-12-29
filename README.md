@@ -1,6 +1,6 @@
 # CAU MOVIT
 
-중앙대학교 소프트웨어보안 실습 repository
+중앙대학교 소프트웨어보안 실습 프로젝트
 
 ## Overview
 
