@@ -2,6 +2,24 @@
 
 중앙대학교 소프트웨어보안 실습 repository
 
+## Overview
+
+### Light
+
+<div>
+<img src="./docs/1-2.png" width="200">
+<img src="./docs/1-1.png" width="200">
+</div>
+
+### Dark
+
+<div>
+<img src="./docs/1.png" width="200">
+<img src="./docs/3.png" width="200">
+<img src="./docs/5.png" width="200">
+<img src="./docs/4.png" width="200">
+</div>
+
 ## SW Requirement Document
 
 요구 사항 등에 대해서 정리한 문서입니다.
